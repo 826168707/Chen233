@@ -8,11 +8,11 @@ import (
 type User struct {
 	Id 		int	`json:"id"`
 	Money	int `json:"money"`
-	Days	int `json:"days"`		//本次设置金额存在的天数
+	Deadline string `json:"deadline" gorm:"default:'nil'"`
 	Username string	`json:"username"`
 	Email 	 string `json:"email"`
 	Password string `json:"password"`
-
+	Placeholder string		//预留数据项
 }
 
 func CreateNewUser(username, email, password string) (err error) {

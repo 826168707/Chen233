@@ -4,6 +4,7 @@ import (
 	"LedgerProject/logic"
 	"LedgerProject/models"
 	"fmt"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -31,6 +32,8 @@ func UserRegistered(c *gin.Context)  {
 		c.JSON(http.StatusOK,gin.H{
 			"message":"注册完成！",
 		})
+		//返回注册登录页
+		c.Redirect(http.StatusMovedPermanently,"/sign")
 	}
 }
 
@@ -46,8 +49,54 @@ func UserLogin(c *gin.Context)  {
 			"message":"邮箱或密码错误!",
 		})
 	}else { 		//成功登录
-		//变为用户登录态
-		//------
+		//添加session
+		session := sessions.Default(c)
+		session.Set("loginuser",email)
+		session.Save()
 
+		//转到主页
+		c.Redirect(http.StatusMovedPermanently,"/home")
 	}
+}
+
+//获取session
+func GetSession(c *gin.Context) bool {
+	session := sessions.Default(c)
+	loginuser := session.Get("loginuser")
+	if loginuser != nil {
+		return true
+	}else {
+		return false
+	}
+}
+
+//退出登录
+func UserSignOut(c *gin.Context)  {
+	//删除session中的数据
+	session := sessions.Default(c)
+	session.Delete("loginuser")
+	session.Save()
+	//转到注册登录界面
+	c.Redirect(http.StatusMovedPermanently,"/sign")
+}
+
+//得到主页信息  1.用户名  2.余额 3.可用余额 4.距离截止日期的天数
+func GetHome(c *gin.Context)  {
+	//根据session中的email从数据库中获取数据
+	email := sessions.Default(c).Get("loginuser")
+	err := logic.LogicGetHome(&email)
+	if err != nil {
+		fmt.Printf("GetHome failed err:%v\n",err)
+		return
+	}
+}
+
+//设置金额 截止日期
+func SetHome(c *gin.Context)  {
+	money := c.PostForm("money")
+	deadline := c.PostForm("deadline")	//格式 2006-01-02
+	//将日期变为时间戳
+	logic.DataToTimeStr(&deadline)
+	//根据session中的email从数据库中获取数据
+	email := sessions.Default(c).Get("loginuser")
 }
