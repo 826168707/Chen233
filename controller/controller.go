@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 //用户注册
@@ -83,20 +84,41 @@ func UserSignOut(c *gin.Context)  {
 //得到主页信息  1.用户名  2.余额 3.可用余额 4.距离截止日期的天数
 func GetHome(c *gin.Context)  {
 	//根据session中的email从数据库中获取数据
-	email := sessions.Default(c).Get("loginuser")
-	err := logic.LogicGetHome(&email)
+	email := logic.GetEmailFromSession(c)
+
+	err,username,days,money,usefulMoney := logic.LogicGetHome(email)
 	if err != nil {
 		fmt.Printf("GetHome failed err:%v\n",err)
 		return
 	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"username":username,
+		"money":money,
+		"usefulmoney":usefulMoney,
+		"days":days,	//days为string类型
+	})
 }
 
-//设置金额 截止日期
+//设置金额 截止日期  每日固定支出
 func SetHome(c *gin.Context)  {
-	money := c.PostForm("money")
+	moneyStr := c.PostForm("money")
 	deadline := c.PostForm("deadline")	//格式 2006-01-02
-	//将日期变为时间戳
-	logic.DataToTimeStr(&deadline)
-	//根据session中的email从数据库中获取数据
-	email := sessions.Default(c).Get("loginuser")
+	dailyexpensesStr := c.PostForm("dailyexpenses")
+
+	email := logic.GetEmailFromSession(c)
+	money,_ := strconv.Atoi(moneyStr)
+	dailyexpenses,_ := strconv.Atoi(dailyexpensesStr)
+
+	err := logic.UpdateCount(email,deadline,money,dailyexpenses)
+	if err != nil {
+		fmt.Printf("UpdateCount failed ,err:%v\n",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"设置完成!",
+	})
+
+	c.Redirect(http.StatusMovedPermanently,"/home")
 }

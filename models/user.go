@@ -8,6 +8,7 @@ import (
 type User struct {
 	Id 		int	`json:"id"`
 	Money	int `json:"money"`
+	Dailyexpenses int `json:"dailyexpenses"`
 	Deadline string `json:"deadline" gorm:"default:'nil'"`
 	Username string	`json:"username"`
 	Email 	 string `json:"email"`
@@ -35,5 +36,11 @@ func FindUserByEmail(email *string) (err error,user User) {
 func FindUserByEmailAndPassword(email, password *string) (err error, user User) {
 
 	err = dao.DB.Where("email=? AND password=?",*email,*password).First(&user).Error
+	return
+}
+
+func UpdateMoneyAndDeadline(email string,money,dailyexpenses int,deadline string) (err error)  {
+	var user User
+	err = dao.DB.Model(&user).Where("email=?",email).Update(map[string]interface{}{"money":money,"deadline":deadline,"dailyexpenses":dailyexpenses}).Error
 	return
 }

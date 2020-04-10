@@ -32,7 +32,7 @@ func SetupRouter() *gin.Engine {
 		//登录主页后页面获取信息
 		v2Group.GET("/",controller.GetHome)
 
-		//设置金额 截止日期
+		//设置金额 截止日期  日常固定支出
 		v2Group.PUT("/",controller.SetHome)
 
 		//退出登录
