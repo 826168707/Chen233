@@ -44,3 +44,9 @@ func UpdateMoneyAndDeadline(email string,money,dailyexpenses int,deadline string
 	err = dao.DB.Model(&user).Where("email=?",email).Update(map[string]interface{}{"money":money,"deadline":deadline,"dailyexpenses":dailyexpenses}).Error
 	return
 }
+
+func UpdateMoneyByEmail(email string,cost int)(err error)  {
+	err,user:= FindUserByEmail(&email)
+	err = dao.DB.Model(&user).Where("email=?",email).Update("money",user.Money-cost).Error
+	return
+}

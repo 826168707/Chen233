@@ -37,6 +37,18 @@ func SetupRouter() *gin.Engine {
 
 		//退出登录
 		v2Group.POST("/out",controller.UserSignOut)
+
+	}
+
+	//支出 收录 路由组
+	v3Group := r.Group("/set")
+	{
+		//想要添加特殊支出
+		v3Group.POST("/cost",controller.WantCost)
+		//确认支出
+		v3Group.PUT("/cost",controller.AddCost)
+		//添加收入
+		v3Group.PUT("/income",controller.AddIncome)
 	}
 
 

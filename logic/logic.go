@@ -115,3 +115,21 @@ func UpdateCount(email, deadline string, money ,dailyexpenses int) (err error) {
 	err = models.UpdateMoneyAndDeadline(email,money,dailyexpenses,deadline)
 	return
 }
+
+
+//添加历史记录
+func AddHistory(email string,kind int,money int,comment string)(err error)  {
+	//获取现在日期
+	now := time.Now().Format("2006-01-02")
+	err = models.AddOneHistory(email,kind,money,comment,now)
+	return
+}
+
+//支出提示 根据用户的可用余额与本次花费的关系进行人性化提醒
+func CostTip(email string,cost int)(err error, remainMoney int)  {
+
+	//返回usefulMoney - cost 值, 前端加上提醒语句
+	err,_,_,_,usefulMoney := LogicGetHome(email)
+	remainMoney = usefulMoney - cost
+	return
+}

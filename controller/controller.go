@@ -122,3 +122,88 @@ func SetHome(c *gin.Context)  {
 
 	c.Redirect(http.StatusMovedPermanently,"/home")
 }
+
+
+//想要添加特殊支出
+func WantCost(c *gin.Context)  {
+	//获取花费金额
+	cost, _ := strconv.Atoi(c.PostForm("cost"))
+	email := logic.GetEmailFromSession(c)
+
+	//提示模块
+	err,remainMoney := logic.CostTip(email,cost)
+	if err != nil {
+		fmt.Printf("CostTip failed, err:%v\n,",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"remainmoney":remainMoney,
+	})
+
+}
+
+//确认添加特殊支出
+func AddCost(c *gin.Context)  {
+
+	//获取种类,注释,花费金额
+	kind, _ := strconv.Atoi(c.PostForm("kind"))
+	comment := c.PostForm("comment")
+	cost, _ := strconv.Atoi(c.PostForm("cost"))
+	email := logic.GetEmailFromSession(c)
+
+	//修改用户金额
+	err := models.UpdateMoneyByEmail(email,cost)
+	if err != nil {
+		fmt.Printf("UpdateMoneyByEmail failed , err:%v\n",err)
+		return
+	}
+
+	err = logic.AddHistory(email,kind,cost,comment)
+	if err != nil {
+		fmt.Printf("AddHistory failed ,err :%v\n",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"完成喽!",
+	})
+
+	c.Redirect(http.StatusMovedPermanently,"/home")
+}
+
+//添加收入
+func AddIncome(c *gin.Context) {
+	//获取 注释 收入金额
+	comment := c.PostForm("comment")
+	income, _ := strconv.Atoi(c.PostForm("income"))
+	income = 0 - income		//变换符号
+	email := logic.GetEmailFromSession(c)
+
+	//修改用户金额
+	err := models.UpdateMoneyByEmail(email,income)
+	if err != nil {
+		fmt.Printf("UpdateMoneyByEmail failed , err:%v\n",err)
+		return
+	}
+	//添加历史记录
+	err = logic.AddHistory(email,0,income,comment)
+	if err != nil {
+		fmt.Printf("AddHistory failed ,err :%v\n",err)
+		return
+	}
+
+	//提示模块
+	err,remainMoney := logic.CostTip(email,income)
+	if err != nil {
+		fmt.Printf("CostTip failed, err:%v\n,",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"remainmoney":remainMoney,
+	})
+
+	c.Redirect(http.StatusMovedPermanently,"/home")
+
+}
