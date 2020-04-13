@@ -133,3 +133,15 @@ func CostTip(email string,cost int)(err error, remainMoney int)  {
 	remainMoney = usefulMoney - cost
 	return
 }
+
+//根据email获取所有支出记录
+func GetCostHistory(email string) (error, []models.History) {
+	err,histories := models.FindCostHistoriesByEmail(email)
+	return err,histories
+}
+
+//根据email获取所有收入记录
+func GetIncomeHistory(email string) (error, []models.History) {
+	err,histories := models.FindIncomeHistoriesByEmail(email)
+	return err,histories
+}

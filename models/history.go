@@ -27,3 +27,16 @@ func AddOneHistory(email string,kind int,money int,comment string,data string)(e
 	err = dao.DB.Create(&newHitory).Error
 	return
 }
+
+func FindCostHistoriesByEmail(email string) (err error,histories []History) {
+
+	err = dao.DB.Where("kind <> ?","0").Find(&histories).Error
+	return
+}
+
+
+func FindIncomeHistoriesByEmail(email string) (err error,histories []History) {
+
+	err = dao.DB.Where("kind = ?","0").Find(&histories).Error
+	return
+}

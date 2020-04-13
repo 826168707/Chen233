@@ -10,12 +10,10 @@ import (
 func main() {
 
 	//连接数据库
-	err := dao.InitMysql()
-	if err != nil {
+	if err := dao.InitMysql();err != nil {
 		fmt.Printf("InitMysql failed , err:%v\n",err)
 		return
 	}
-
 	defer dao.Close()
 
 	//模型绑定

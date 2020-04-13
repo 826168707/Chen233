@@ -51,7 +51,14 @@ func SetupRouter() *gin.Engine {
 		v3Group.PUT("/income",controller.AddIncome)
 	}
 
-
+	//历史记录路由组
+	v4Group := r.Group("/history")
+	{
+		//支出历史记录
+		v4Group.GET("/cost",controller.CostHistory)
+		//收入历史记录
+		v4Group.GET("/income",controller.IncomeHistory)
+	}
 
 
 

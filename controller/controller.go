@@ -207,3 +207,35 @@ func AddIncome(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently,"/home")
 
 }
+
+//支出历史记录
+func CostHistory(c *gin.Context)  {
+	email := logic.GetEmailFromSession(c)
+
+	//根据email获取所有支出记录
+    err,histories := logic.GetCostHistory(email)
+    if err != nil {
+		fmt.Printf("GetCostHistory failed err:%v\n",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"histories":histories,
+	})
+
+}
+
+//收入历史记录
+func IncomeHistory(c *gin.Context)  {
+	email := logic.GetEmailFromSession(c)
+
+	err,histories := logic.GetIncomeHistory(email)
+	if err != nil {
+		fmt.Printf("GetIncomeHistory failed, err:%v\n",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"histories":histories,
+	})
+}
