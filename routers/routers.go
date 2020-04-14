@@ -60,7 +60,8 @@ func SetupRouter() *gin.Engine {
 		v4Group.GET("/income",controller.IncomeHistory)
 	}
 
-
+	//推荐路由
+	r.GET("/recommend",controller.Recommend)
 
 
 	return r

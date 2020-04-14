@@ -81,7 +81,7 @@ func UserSignOut(c *gin.Context)  {
 	c.Redirect(http.StatusMovedPermanently,"/sign")
 }
 
-//得到主页信息  1.用户名  2.余额 3.可用余额 4.距离截止日期的天数
+//得到主页信息  1.用户名  2.余额 3.可用余额 4.距离截止日期的天数 + 数据可视化
 func GetHome(c *gin.Context)  {
 	//根据session中的email从数据库中获取数据
 	email := logic.GetEmailFromSession(c)
@@ -91,26 +91,36 @@ func GetHome(c *gin.Context)  {
 		fmt.Printf("GetHome failed err:%v\n",err)
 		return
 	}
+	//可视数据
+	err,visualData := logic.VisualData(email)
+	if err != nil {
+		fmt.Printf("VisualData failed, err:%v\n",err)
+		return
+	}
+
 
 	c.JSON(http.StatusOK,gin.H{
 		"username":username,
 		"money":money,
-		"usefulmoney":usefulMoney,
+		"useful_money":usefulMoney,
 		"days":days,	//days为string类型
+		"visual_data":visualData,
 	})
 }
 
 //设置金额 截止日期  每日固定支出
 func SetHome(c *gin.Context)  {
-	moneyStr := c.PostForm("money")
-	deadline := c.PostForm("deadline")	//格式 2006-01-02
-	dailyexpensesStr := c.PostForm("dailyexpenses")
 
-	email := logic.GetEmailFromSession(c)
-	money,_ := strconv.Atoi(moneyStr)
-	dailyexpenses,_ := strconv.Atoi(dailyexpensesStr)
+	var(
+		moneyStr = c.PostForm("money")
+		deadline = c.PostForm("deadline")	//格式 2006-01-02
+		dailyExpensesStr = c.PostForm("daily_expenses")
+		email = logic.GetEmailFromSession(c)
+		money,_ = strconv.Atoi(moneyStr)
+		dailyExpenses,_ = strconv.Atoi(dailyExpensesStr)
+	)
 
-	err := logic.UpdateCount(email,deadline,money,dailyexpenses)
+	err := logic.UpdateCount(email,deadline,money,dailyExpenses)
 	if err != nil {
 		fmt.Printf("UpdateCount failed ,err:%v\n",err)
 		return
@@ -138,7 +148,7 @@ func WantCost(c *gin.Context)  {
 	}
 
 	c.JSON(http.StatusOK,gin.H{
-		"remainmoney":remainMoney,
+		"remain_money":remainMoney,
 	})
 
 }
@@ -201,7 +211,7 @@ func AddIncome(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK,gin.H{
-		"remainmoney":remainMoney,
+		"remain_money":remainMoney,
 	})
 
 	c.Redirect(http.StatusMovedPermanently,"/home")
@@ -237,5 +247,19 @@ func IncomeHistory(c *gin.Context)  {
 
 	c.JSON(http.StatusOK,gin.H{
 		"histories":histories,
+	})
+}
+
+//推荐模块
+func Recommend(c *gin.Context)  {
+	email := logic.GetEmailFromSession(c)
+
+	err,commodities := logic.GetRecommend(email)
+	if err != nil {
+		fmt.Printf("GetRecommend failed , err:%v\n",err)
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"commodities":commodities,
 	})
 }

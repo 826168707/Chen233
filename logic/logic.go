@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"LedgerProject/models"
+	models "LedgerProject/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -53,7 +53,7 @@ func LogicGetHome(email string) (err error, username,days string, money,usefulMo
 			days_Int := CalculateDays(user.Deadline)
 			days = strconv.Itoa(days_Int)
 			//计算可用余额
-			usefulMoney = CalculateUsefulMoney(days_Int,money,user.Dailyexpenses)
+			usefulMoney = CalculateUsefulMoney(days_Int,money,user.DailyExpenses)
 
 		}
 	}
@@ -69,8 +69,8 @@ func IsExpired(deadlline string) bool {
 
 
 //计算可用余额  可用余额=余额-天数*每日固定支出
-func CalculateUsefulMoney(days,money,dailyexpenses int)(usefulMoney int)  {
-	usefulMoney = money - days * dailyexpenses
+func CalculateUsefulMoney(days,money,dailyExpenses int)(usefulMoney int)  {
+	usefulMoney = money - days * dailyExpenses
 	return 
 }
 
@@ -78,6 +78,15 @@ func CalculateUsefulMoney(days,money,dailyexpenses int)(usefulMoney int)  {
 func CalculateDays(deadline string)(days int) {
 	t1 := time.Now()
 	t2 := StringToTime(deadline)
+
+	days = int(t2.Sub(t1).Hours()/24)
+
+	return
+}
+
+func VisualCalculateDays(now,setData string)(days int) {
+	t1 := StringToTime(setData)
+	t2 := StringToTime(now)
 
 	days = int(t2.Sub(t1).Hours()/24)
 
@@ -108,11 +117,11 @@ func StringToTime(str string) (theTime time.Time) {
 }
 
 
-//更新对应用户的金额,日期,日常固定支出
+//更新对应用户的金额,设置日期,截止日期,日常固定支出
 func UpdateCount(email, deadline string, money ,dailyexpenses int) (err error) {
-
+	now := time.Now().Format("2006-01-02")
 	//更新
-	err = models.UpdateMoneyAndDeadline(email,money,dailyexpenses,deadline)
+	err = models.UpdateMoneyAndDeadline(email,money,dailyexpenses,deadline,now)
 	return
 }
 
@@ -144,4 +153,45 @@ func GetCostHistory(email string) (error, []models.History) {
 func GetIncomeHistory(email string) (error, []models.History) {
 	err,histories := models.FindIncomeHistoriesByEmail(email)
 	return err,histories
+}
+
+//可视数据  算出每种kind的花费之和
+func VisualData(email string) (error, map[int]int, ) {
+
+	err,histories := models.FindCostHistoriesByEmail(email)
+	err,user := models.FindUserByEmail(&email)
+
+	sum := map[int]int{}
+	for _,v := range histories{
+		sum[v.Kind] += v.Money
+	}
+	//计算到今天的日常花费  days * dailyExpenses
+	sum[9] = VisualCalculateDays(time.Now().Format("2006-01-02"),user.SetData) * user.DailyExpenses
+
+	return err,sum
+}
+
+//推荐模块  根据用户的可用余额进行推荐
+func GetRecommend(email string) (error, []models.Commodity) {
+
+	//获取用户的可用余额
+	err,user := models.FindUserByEmail(&email)
+	usefulMoney := CalculateUsefulMoney(CalculateDays(user.Deadline),user.Money,user.DailyExpenses)
+
+
+	//usefulMoney > 1000 推荐吃喝玩乐
+
+	var	commodities []models.Commodity
+
+	if usefulMoney > 1000 {
+		err,commodities = models.FindKind1()
+	}else if usefulMoney > 500{
+		err,commodities = models.FindKind2()	//推荐高性价比商品
+	}else if usefulMoney > 100{
+		err,commodities = models.FindKind3()	//推荐书
+	}else {
+		err,commodities = models.FindKind0()	//推荐兼职
+	}
+
+	return err,commodities
 }
