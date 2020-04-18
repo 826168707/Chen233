@@ -14,12 +14,17 @@ func main() {
 		fmt.Printf("InitMysql failed , err:%v\n",err)
 		return
 	}
+	if err := dao.InitRedis();err != nil {
+		fmt.Printf("InitRedis failed ,err:%v\n",err)
+	}
+
 	defer dao.Close()
+	defer dao.Rclose()
 
 	//模型绑定
 	dao.DB.AutoMigrate(&models.User{},&models.History{},&models.Commodity{})
 
 	//注册路由
 	r := routers.SetupRouter()
-	r.Run(":8080")
+	r.Run(":7777")
 }

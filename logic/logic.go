@@ -1,10 +1,15 @@
 package logic
 
 import (
+	"LedgerProject/dao"
 	models "LedgerProject/models"
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"math/rand"
+	"net/smtp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -194,4 +199,53 @@ func GetRecommend(email string) (error, []models.Commodity) {
 	}
 
 	return err,commodities
+}
+
+
+//发送验证码
+func SendEmail(email string) bool {
+	//判断是否填写了email
+	if email == ""{
+		return false
+	}
+	//获取随机数
+	rand.Seed(time.Now().Unix())
+	num := rand.Intn(10000)
+	//随机数存入redis,定时5分钟
+	if err := dao.AddCaptcha(num);err != nil{
+		fmt.Printf("AddCaptcha failed, err:%v\n",err)
+		return false
+	}
+
+	auth := smtp.PlainAuth("","826168707@qq.com","uwdwkbupldkcbeda","smtp.qq.com")
+	to := []string{email}
+	nickname := "流云规划"
+	user := "826168707@qq.com"
+	subject := "流云规划--验证码"
+	contentType := "Content-Type: text/plain; charset=UTF-8"
+	body := "验证码是\t"+strconv.Itoa(num)
+	msg := []byte("To: " + strings.Join(to, ",") + "\r\nFrom: " + nickname +
+		"<" + user + ">\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n" + body)
+	err := smtp.SendMail("smtp.qq.com:25", auth, user, to, msg)
+	if err != nil {
+		fmt.Printf("send mail error: %v", err)
+		return false
+	}
+	return true
+}
+
+//验证码验证
+func CaptchaCheck(captcha string) bool {
+	num,err := dao.GetCaptcha()
+	if err != nil {
+		fmt.Printf("GetCaptcha failed ,err%v\n",err)
+		return false
+	}
+
+	if captcha == num {	//相同
+		return true
+	}else {
+		return false
+	}
+
 }

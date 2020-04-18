@@ -9,8 +9,11 @@ import (
 
 
 func SetupRouter() *gin.Engine {
+
 	r := gin.Default()
 
+
+	r.Use(controller.Cors())
 	//r.Static()	导入静态文件
 	//r.LoadHTMLGlob()	模板
 
@@ -21,19 +24,21 @@ func SetupRouter() *gin.Engine {
 	v1Group := r.Group("sign")
 	{
 		//注册
-		v1Group.POST("/up",controller.UserRegistered)
+		v1Group.PUT("/up",controller.UserRegistered)
+		//发送验证码
+		v1Group.POST("/up",controller.SendEmail)
 		//登录
-		v1Group.POST("/",controller.UserLogin)
+		v1Group.POST("",controller.UserLogin)
 	}
 
 	//主页路由组
 	v2Group := r.Group("home")
 	{
 		//登录主页后页面获取信息
-		v2Group.GET("/",controller.GetHome)
+		v2Group.GET("",controller.GetHome)
 
 		//设置金额 截止日期  日常固定支出
-		v2Group.PUT("/",controller.SetHome)
+		v2Group.PUT("",controller.SetHome)
 
 		//退出登录
 		v2Group.POST("/out",controller.UserSignOut)
@@ -41,7 +46,7 @@ func SetupRouter() *gin.Engine {
 	}
 
 	//支出 收录 路由组
-	v3Group := r.Group("/set")
+	v3Group := r.Group("set")
 	{
 		//想要添加特殊支出
 		v3Group.POST("/cost",controller.WantCost)
@@ -52,7 +57,7 @@ func SetupRouter() *gin.Engine {
 	}
 
 	//历史记录路由组
-	v4Group := r.Group("/history")
+	v4Group := r.Group("history")
 	{
 		//支出历史记录
 		v4Group.GET("/cost",controller.CostHistory)

@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2ab5901-11ff-4ab3-9053-67d4cc048154" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/models/commodity.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dao/redis.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/logic.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/routers.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,9 +108,22 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build scratch_7.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="LedgerProject" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <envs>
+        <env name="GO111MODULE" value="off" />
+      </envs>
+      <kind value="FILE" />
+      <filePath value="$APPLICATION_CONFIG_DIR$/scratches/scratch_7.go" />
+      <package value="LedgerProject" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build LedgerProject" />
+        <item itemvalue="Go Build.go build scratch_7.go" />
         <item itemvalue="Go Build.go build scratch_5.go" />
         <item itemvalue="Go Build.go build scratch_4.go" />
         <item itemvalue="Go Build.go build scratch_3.go" />
@@ -132,26 +146,30 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="1025" y="215" width="800" height="673" key="#Inspections/0.28.1920.1052@0.28.1920.1052" timestamp="1586584130626" />
+    <state x="1025" y="215" width="800" height="673" key="#Notifications" timestamp="1587101559199">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="1025" y="215" width="800" height="673" key="#Notifications/0.28.1920.1052@0.28.1920.1052" timestamp="1587101559199" />
     <state x="960" y="197" width="800" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586842812225">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="960" y="197" width="800" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1586842812225" />
-    <state width="906" height="242" key="GridCell.Tab.0.bottom" timestamp="1586872910571">
+    <state width="906" height="236" key="GridCell.Tab.0.bottom" timestamp="1587195807902">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="906" height="242" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1586872910571" />
-    <state width="906" height="242" key="GridCell.Tab.0.center" timestamp="1586872910571">
+    <state width="906" height="236" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1587195807902" />
+    <state width="906" height="236" key="GridCell.Tab.0.center" timestamp="1587195807901">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="906" height="242" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1586872910571" />
-    <state width="906" height="242" key="GridCell.Tab.0.left" timestamp="1586872910570">
+    <state width="906" height="236" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1587195807901" />
+    <state width="906" height="236" key="GridCell.Tab.0.left" timestamp="1587195807901">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="906" height="242" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1586872910570" />
-    <state width="906" height="242" key="GridCell.Tab.0.right" timestamp="1586872910571">
+    <state width="906" height="236" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1587195807901" />
+    <state width="906" height="236" key="GridCell.Tab.0.right" timestamp="1587195807902">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="906" height="242" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1586872910571" />
+    <state width="906" height="236" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1587195807902" />
     <state x="375" y="211" key="SettingsEditor" timestamp="1586317516517">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
