@@ -30,13 +30,13 @@ func AddOneHistory(email string,kind int,money int,comment string,data string)(e
 
 func FindCostHistoriesByEmail(email string) (err error,histories []History) {
 
-	err = dao.DB.Where("kind <> ?","0").Find(&histories).Error
+	err = dao.DB.Where("email = ? AND kind <> ?",email,"0").Find(&histories).Error
 	return
 }
 
 
 func FindIncomeHistoriesByEmail(email string) (err error,histories []History) {
 
-	err = dao.DB.Where("kind = ?","0").Find(&histories).Error
+	err = dao.DB.Where("email = ? AND kind = ?",email,"0").Find(&histories).Error
 	return
 }

@@ -100,8 +100,8 @@ func VisualCalculateDays(now,setData string)(days int) {
 
 //从session获取email并进行类型修正
 func GetEmailFromSession(c *gin.Context)(email string){
-	interEmail := sessions.Default(c).Get("loginuser")
-	email = interEmail.(string)
+	email = sessions.Default(c).Get("loginuser").(string)
+	fmt.Printf("session == %v\n",email)
 	return
 }
 //日期变为时间戳
@@ -249,3 +249,4 @@ func CaptchaCheck(captcha string) bool {
 	}
 
 }
+

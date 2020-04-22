@@ -80,12 +80,17 @@ func UserLogin(c *gin.Context)  {
 		})
 	}else { 		//成功登录
 		//添加session
-		session := sessions.Default(c)
-		session.Set("loginuser",email)
-		session.Save()
+		//session := sessions.Default(c)
+		//session.Set("loginuser",email)
+		//session.Save()
+		//fmt.Printf(session.Get("loginuser").(string))
+
+		//生成Token
+		token,_ := logic.GenToken(email)
 
 		c.JSON(http.StatusOK,gin.H{
 			"message":"登录成功!",
+			"token":token,
 		})
 	}
 }
@@ -103,18 +108,20 @@ func GetSession(c *gin.Context) bool {
 
 //退出登录
 func UserSignOut(c *gin.Context)  {
-	//删除session中的数据
-	session := sessions.Default(c)
-	session.Delete("loginuser")
-	session.Save()
+	////删除session中的数据
+	//session := sessions.Default(c)
+	//session.Delete("loginuser")
+	//session.Save()
 	//转到注册登录界面
 	c.Redirect(http.StatusMovedPermanently,"/sign")
 }
 
 //得到主页信息  1.用户名  2.余额 3.可用余额 4.距离截止日期的天数 + 数据可视化
 func GetHome(c *gin.Context)  {
-	//根据session中的email从数据库中获取数据
-	email := logic.GetEmailFromSession(c)
+	////根据session中的email从数据库中获取数据
+	//email := logic.GetEmailFromSession(c)
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 
 	err,username,days,money,usefulMoney := logic.LogicGetHome(email)
 	if err != nil {
@@ -145,7 +152,8 @@ func SetHome(c *gin.Context)  {
 		moneyStr = c.PostForm("money")
 		deadline = c.PostForm("deadline")	//格式 2006-01-02
 		dailyExpensesStr = c.PostForm("daily_expenses")
-		email = logic.GetEmailFromSession(c)
+		interEmail, _ = c.Get("email")
+		email = interEmail.(string)
 		money,_ = strconv.Atoi(moneyStr)
 		dailyExpenses,_ = strconv.Atoi(dailyExpensesStr)
 	)
@@ -167,7 +175,8 @@ func SetHome(c *gin.Context)  {
 func WantCost(c *gin.Context)  {
 	//获取花费金额
 	cost, _ := strconv.Atoi(c.PostForm("cost"))
-	email := logic.GetEmailFromSession(c)
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 
 	//提示模块
 	err,remainMoney := logic.CostTip(email,cost)
@@ -189,7 +198,8 @@ func AddCost(c *gin.Context)  {
 	kind, _ := strconv.Atoi(c.PostForm("kind"))
 	comment := c.PostForm("comment")
 	cost, _ := strconv.Atoi(c.PostForm("cost"))
-	email := logic.GetEmailFromSession(c)
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 
 	//修改用户金额
 	err := models.UpdateMoneyByEmail(email,cost)
@@ -216,8 +226,8 @@ func AddIncome(c *gin.Context) {
 	comment := c.PostForm("comment")
 	income, _ := strconv.Atoi(c.PostForm("income"))
 	income = 0 - income		//变换符号
-	email := logic.GetEmailFromSession(c)
-
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 	//修改用户金额
 	err := models.UpdateMoneyByEmail(email,income)
 	if err != nil {
@@ -248,8 +258,8 @@ func AddIncome(c *gin.Context) {
 
 //支出历史记录
 func CostHistory(c *gin.Context)  {
-	email := logic.GetEmailFromSession(c)
-
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 	//根据email获取所有支出记录
     err,histories := logic.GetCostHistory(email)
     if err != nil {
@@ -265,7 +275,8 @@ func CostHistory(c *gin.Context)  {
 
 //收入历史记录
 func IncomeHistory(c *gin.Context)  {
-	email := logic.GetEmailFromSession(c)
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 
 	err,histories := logic.GetIncomeHistory(email)
 	if err != nil {
@@ -280,7 +291,8 @@ func IncomeHistory(c *gin.Context)  {
 
 //推荐模块
 func Recommend(c *gin.Context)  {
-	email := logic.GetEmailFromSession(c)
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
 
 	err,commodities := logic.GetRecommend(email)
 	if err != nil {
