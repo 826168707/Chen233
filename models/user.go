@@ -9,7 +9,7 @@ type User struct {
 	Id 		int	`json:"id"`
 	Money	int `json:"money"`
 	DailyExpenses int `json:"daily_expenses"`
-	SetData  string	`json:"set_data"`
+	SetDate  string	`json:"set_date"`
 	Deadline string `json:"deadline" gorm:"default:'nil'"`
 	Username string	`json:"username"`
 	Email 	 string `json:"email"`
@@ -40,9 +40,9 @@ func FindUserByEmailAndPassword(email, password *string) (err error, user User) 
 	return
 }
 
-func UpdateMoneyAndDeadline(email string,money,dailyExpenses int,deadline string,setData string) (err error)  {
+func UpdateMoneyAndDeadline(email string,money,dailyExpenses int,deadline string,setDate string) (err error)  {
 	var user User
-	err = dao.DB.Model(&user).Where("email=?",email).Update(map[string]interface{}{"money":money,"deadline":deadline,"daily_expenses":dailyExpenses,"set_data":setData}).Error
+	err = dao.DB.Model(&user).Where("email=?",email).Update(map[string]interface{}{"money":money,"deadline":deadline,"daily_expenses":dailyExpenses,"set_date":setDate}).Error
 	return
 }
 

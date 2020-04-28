@@ -60,8 +60,12 @@ func SetupRouter() *gin.Engine {
 	{
 		//支出历史记录
 		v4Group.GET("/cost",logic.JWTAuthMiddleware(),controller.CostHistory)
+		//修改历史记录
+		v4Group.PUT("",logic.JWTAuthMiddleware(),controller.UpdateHistory)
 		//收入历史记录
 		v4Group.GET("/income",logic.JWTAuthMiddleware(),controller.IncomeHistory)
+		//删除历史记录
+		v4Group.DELETE("",logic.JWTAuthMiddleware(),controller.DeleteHistory)
 	}
 
 	//推荐路由

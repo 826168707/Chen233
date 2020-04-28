@@ -171,7 +171,7 @@ func VisualData(email string) (error, map[int]int, ) {
 		sum[v.Kind] += v.Money
 	}
 	//计算到今天的日常花费  days * dailyExpenses
-	sum[9] = VisualCalculateDays(time.Now().Format("2006-01-02"),user.SetData) * user.DailyExpenses
+	sum[11] = VisualCalculateDays(time.Now().Format("2006-01-02"),user.SetDate) * user.DailyExpenses
 
 	return err,sum
 }
@@ -195,7 +195,7 @@ func GetRecommend(email string) (error, []models.Commodity) {
 	}else if usefulMoney > 100{
 		err,commodities = models.FindKind3()	//推荐书
 	}else {
-		err,commodities = models.FindKind0()	//推荐兼职
+		err,commodities = models.FindKind4()	//推荐兼职
 	}
 
 	return err,commodities

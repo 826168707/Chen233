@@ -297,6 +297,7 @@ func Recommend(c *gin.Context)  {
 	err,commodities := logic.GetRecommend(email)
 	if err != nil {
 		fmt.Printf("GetRecommend failed , err:%v\n",err)
+		return
 	}
 
 	c.JSON(http.StatusOK,gin.H{
@@ -304,6 +305,58 @@ func Recommend(c *gin.Context)  {
 	})
 }
 
+//编辑历史记录
+func UpdateHistory(c *gin.Context)  {
+	var(
+		id,_= strconv.Atoi(c.PostForm("id"))
+		kind,_ = strconv.Atoi(c.PostForm("kind"))
+		money,_ = strconv.Atoi(c.PostForm("money"))
+		date = c.PostForm("date")
+		comment = c.PostForm("comment")
+	)
+
+	err := models.UpdateHistoriesById(date,comment,id,kind,money)
+	if err != nil {
+		fmt.Printf("UpdateCostHistoriesById failed,err:%v\n",err)
+		c.JSON(http.StatusOK,gin.H{
+			"failed":"编辑失败!",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"编辑完成!",
+	})
+}
+
+//删除历史记录
+func DeleteHistory(c *gin.Context)  {
+	id,_:= strconv.Atoi(c.PostForm("id"))
+	income, _ := strconv.Atoi(c.PostForm("money"))
+	income = 0 - income		//变换符号
+	interEmail, _ := c.Get("email")
+	email := interEmail.(string)
+
+	err := models.DeleteHistoriesById(id)
+	if err != nil {
+		fmt.Printf("DeleteHistoriesById failed,err:%v\n",err)
+		c.JSON(http.StatusOK,gin.H{
+			"failed":"删除失败!",
+		})
+		return
+	}
+
+	err = models.UpdateMoneyByEmail(email,income)
+	if err != nil {
+		fmt.Printf("UpdateMoneyByEmail failed , err:%v\n",err)
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"删除成功!",
+	})
+
+}
 
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {

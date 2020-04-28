@@ -30,8 +30,8 @@ func FindKind3() (error, []Commodity) {
 	return err,commodities
 }
 
-func FindKind0() (error, []Commodity) {
+func FindKind4() (error, []Commodity) {
 	var commodities []Commodity
-	err := dao.DB.Where("kind = ?","0").Order("rand()").Limit(6).Find(&commodities).Error
+	err := dao.DB.Where("kind = ?","4").Order("rand()").Limit(6).Find(&commodities).Error
 	return err,commodities
 }
