@@ -41,6 +41,11 @@ func FindIncomeHistoriesByEmail(email string) (err error,histories []History) {
 	return
 }
 
+func FindIdFromHistory(email string,kind int,money int,comment string)(err error,history History)  {
+	err = dao.DB.Where("eamil = ? AND kind = ? AND money = ? AND date = ?",email,kind,money,comment).First(&history).Error
+	return
+}
+
 func UpdateHistoriesById(date,comment string ,id,kind,money int) (err error) {
 	var history History
 	history.Id = id
@@ -53,3 +58,4 @@ func DeleteHistoriesById(id int) (err error) {
 	err = dao.DB.Where("id = ?",id).Delete(&history).Error
 	return
 }
+

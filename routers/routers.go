@@ -71,6 +71,11 @@ func SetupRouter() *gin.Engine {
 	//推荐路由
 	r.GET("/recommend",logic.JWTAuthMiddleware(),controller.Recommend)
 
+	//上传图片
+	r.POST("/upload",logic.JWTAuthMiddleware(),controller.UploadFile)
+
+	//获取图片
+	r.GET("/show_img",controller.ShowImg)
 
 	return r
 }

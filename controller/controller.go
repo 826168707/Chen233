@@ -213,9 +213,15 @@ func AddCost(c *gin.Context)  {
 		fmt.Printf("AddHistory failed ,err :%v\n",err)
 		return
 	}
-
+	//获取记录id
+	err,history := models.FindIdFromHistory(email,kind,cost,comment)
+	if err != nil {
+		fmt.Printf("FindIdFromHistory failed,err:%v\n",err)
+		return
+	}
 	c.JSON(http.StatusOK,gin.H{
 		"message":"完成喽!",
+		"img_id":history.Id,
 	})
 
 }
@@ -248,8 +254,16 @@ func AddIncome(c *gin.Context) {
 		return
 	}
 
+	//获取记录id
+	err,history := models.FindIdFromHistory(email,0,income,comment)
+	if err != nil {
+		fmt.Printf("FindIdFromHistory failed,err:%v\n",err)
+		return
+	}
+
 	c.JSON(http.StatusOK,gin.H{
 		"remain_money":remainMoney,
+		"img_id":history.Id,
 	})
 
 
@@ -394,4 +408,28 @@ func Cors() gin.HandlerFunc {
 	}
 }
 
+//上传图片
+func UploadFile(c *gin.Context)  {
+	file,_ := c.FormFile("file")
+	name := c.PostForm("img_id")
+	filename := name + ".png"
 
+	err := c.SaveUploadedFile(file,"./static/"+filename)
+	if err != nil {
+		fmt.Printf("SaveUploadedFile failed,err:%v\n",err)
+		c.JSON(http.StatusOK,gin.H{
+			"failed":"上传失败!",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"上传成功!",
+	})
+}
+
+//显示图片
+func ShowImg(c *gin.Context)  {
+	imageName := c.Query("imageName")
+	c.File(imageName)
+}
