@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d2ab5901-11ff-4ab3-9053-67d4cc048154" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/history.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/history.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/routers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/2.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,6 @@
   <component name="ProjectId" id="1aF0DrTY1iOHLNQLlOwlqLRK0ot" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -58,8 +58,8 @@
     <property name="configurable.Module.GOPATH.is.expanded" value="false" />
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
   <component name="RunManager" selected="Go Build.go build LedgerProject">
     <configuration name="go build LedgerProject" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -127,10 +127,15 @@
     </recent_temporary>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
+    <environment>
+      <map>
+        <entry key="GOPROXY" value="direct" />
+      </map>
+    </environment>
     <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
@@ -150,25 +155,25 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="960" y="197" width="800" height="673" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.28.1920.1052@0.28.1920.1052" timestamp="1586842812225" />
-    <state width="1866" height="234" key="GridCell.Tab.0.bottom" timestamp="1588162152362">
+    <state width="1866" height="232" key="GridCell.Tab.0.bottom" timestamp="1589469151892">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1866" height="234" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1588162152362" />
-    <state width="1866" height="234" key="GridCell.Tab.0.center" timestamp="1588162152361">
+    <state width="1866" height="232" key="GridCell.Tab.0.bottom/0.28.1920.1052@0.28.1920.1052" timestamp="1589469151892" />
+    <state width="1866" height="232" key="GridCell.Tab.0.center" timestamp="1589469151891">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1866" height="234" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1588162152361" />
-    <state width="1866" height="234" key="GridCell.Tab.0.left" timestamp="1588162152361">
+    <state width="1866" height="232" key="GridCell.Tab.0.center/0.28.1920.1052@0.28.1920.1052" timestamp="1589469151891" />
+    <state width="1866" height="232" key="GridCell.Tab.0.left" timestamp="1589469151890">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1866" height="234" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1588162152361" />
-    <state width="1866" height="234" key="GridCell.Tab.0.right" timestamp="1588162152361">
+    <state width="1866" height="232" key="GridCell.Tab.0.left/0.28.1920.1052@0.28.1920.1052" timestamp="1589469151890" />
+    <state width="1866" height="232" key="GridCell.Tab.0.right" timestamp="1589469151892">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1866" height="234" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1588162152361" />
-    <state x="375" y="211" key="SettingsEditor" timestamp="1586317516517">
+    <state width="1866" height="232" key="GridCell.Tab.0.right/0.28.1920.1052@0.28.1920.1052" timestamp="1589469151892" />
+    <state x="883" y="181" key="SettingsEditor" timestamp="1589009024404">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="375" y="211" key="SettingsEditor/0.28.1920.1052@0.28.1920.1052" timestamp="1586317516517" />
+    <state x="883" y="181" key="SettingsEditor/0.28.1920.1052@0.28.1920.1052" timestamp="1589009024404" />
   </component>
 </project>
