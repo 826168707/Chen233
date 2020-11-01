@@ -2,13 +2,16 @@ package main
 
 import (
 	"LedgerProject/dao"
+	"LedgerProject/log"
 	"LedgerProject/models"
 	"LedgerProject/routers"
 	"fmt"
+	"go.uber.org/zap"
 )
 
 func main() {
-
+	//初始化日志库
+	log.SetLogs(zap.DebugLevel,log.LOGFORMAT_CONSOLE,"./log/server.log")
 	//连接数据库
 	if err := dao.InitMysql();err != nil {
 		fmt.Printf("InitMysql failed , err:%v\n",err)

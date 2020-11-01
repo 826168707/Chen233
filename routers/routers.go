@@ -3,7 +3,10 @@ package routers
 import (
 	"LedgerProject/controller"
 	"LedgerProject/logic"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"time"
 )
 
 
@@ -12,12 +15,12 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
 
-	r.Use(controller.Cors())
-	//r.Static()	导入静态文件
-	//r.LoadHTMLGlob()	模板
 
-	//store := cookie.NewStore([]byte("loginuser"))
-	//r.Use(sessions.Sessions("session",store))
+	r.Use(controller.Cors())
+
+	//使用zap日志
+	r.Use(ginzap.Ginzap(zap.L(),time.RFC3339,true))
+	r.Use(ginzap.RecoveryWithZap(zap.L(),true))
 
 	//注册登录相关路由组
 	v1Group := r.Group("sign")

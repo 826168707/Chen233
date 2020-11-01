@@ -220,7 +220,7 @@ func SendEmail(email string) bool {
 	body := "验证码是\t" + strconv.Itoa(num)
 	msg := []byte("To: " + strings.Join(to, ",") + "\r\nFrom: " + nickname +
 		"<" + user + ">\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n" + body)
-	err := smtp.SendMail("smtp.qq.com:25", auth, user, to, msg)
+	err := smtp.SendMail("smtp.qq.com:587", auth, user, to, msg)
 	if err != nil {
 		fmt.Printf("send mail error: %v", err)
 		return false

@@ -1,0 +1,1 @@
+2020-05-24T17:42:39.431+0800	INFO	zap@v0.0.1/zap.go:46	/sign/up	{"status": 200, "method": "POST", "path": "/sign/up", "query": "", "ip": "127.0.0.1", "user-agent": "PostmanRuntime/7.25.0", "time": "2020-05-24T09:42:39Z", "latency": 0.713437559}
